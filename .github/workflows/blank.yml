@@ -21,13 +21,11 @@ jobs:
         if: ${{ startsWith(github.ref_name, 'dev') }}
         run: |
           echo "STAGE=dev" >> $GITHUB_ENV
-          echo "SSH_HOST=54.155.13.164" >> $GITHUB_ENV
           echo "SSH_USER=ec2-user" >> $GITHUB_ENV
       - name: sets for staging
         if: ${{ startsWith(github.ref_name, 'staging') }}
         run: |
           echo "STAGE=staging" >> $GITHUB_ENV
-          echo "SSH_HOST=52.214.233.30" >> $GITHUB_ENV
           echo "SSH_USER=ubuntu" >> $GITHUB_ENV
       - name: Set config
         id: sets
@@ -35,12 +33,10 @@ jobs:
           if [ "${{ env.STAGE }}" == "dev" ]; then
              echo "gpu_runner=gpu-dev" >> "$GITHUB_OUTPUT";
              echo "STAGE=dev" >> "$GITHUB_OUTPUT";
-             echo "SSH_HOST=54.155.13.164" >> "$GITHUB_OUTPUT";
              echo "SSH_USER=ec2-user" >> "$GITHUB_OUTPUT";
           elif [ "${{ env.STAGE }}" == "staging" ]; then
              echo "gpu_runner=gpu-prod-1" >> "$GITHUB_OUTPUT";
              echo "STAGE=staging" >> "$GITHUB_OUTPUT";
-             echo "SSH_HOST=52.214.233.30" >> "$GITHUB_OUTPUT";
              echo "SSH_USER=ubuntu" >> "$GITHUB_OUTPUT";
           else
              # In case none of the above occurs
@@ -58,7 +54,7 @@ jobs:
     env:
       DEPLOY_TO_USER: yoel
       STAGE: ${{ needs.set-env-vars.outputs.stage }}
-    name: Deploy ${{ needs.set-env-vars.outputs.stage }} on ${{ matrix.os }}
+    name: Deploy GPU API ${{ github.ref_name }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
