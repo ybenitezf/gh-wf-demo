@@ -58,6 +58,7 @@ jobs:
     env:
       DEPLOY_TO_USER: yoel
       STAGE: ${{ needs.set-env-vars.outputs.stage }}
+    name: Deploy ${{ needs.set-env-vars.outputs.stage }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
